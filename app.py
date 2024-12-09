@@ -18,8 +18,8 @@ column_names = [
 
 # Mapping des noms complets pour le formulaire
 column_labels = {
-    "age": "Gender",
-    "sex": "Sex",
+    "age": "Age",
+    "sex": "Gender",
     "cp": "Chest Pain",
     "trtbps": "Resting Blood Pressure",
     "chol": "Cholesterol",
