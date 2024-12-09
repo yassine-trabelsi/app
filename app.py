@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
+import requests
 
 # Charger les modèles sauvegardés
 svm_model = joblib.load('svm_model.pkl')
@@ -48,6 +49,39 @@ thalachh_low = 100    # Seuil bas pour fréquence cardiaque maximale (thalachh)
 if "data" not in st.session_state:
     st.session_state.data = pd.DataFrame(columns=column_names + ['Prediction', 'Cluster'])
 
+
+
+
+# Function to interact with the Gemini API
+def get_gemini_response(user_input):
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent"  # Correct API endpoint for Gemini
+    headers = {
+        "Content-Type": "application/json"
+    }
+    params = {
+        "key": "AIzaSyBE1AXHM84mbW_jBrA-ArwqZodEDLuAbvU"  # Use your actual Gemini API key
+    }
+    data = {
+        "contents": [{
+            "parts": [{"text": user_input}]
+        }]
+    }
+    response = requests.post(url, headers=headers, params=params, json=data)
+    
+    if response.status_code == 200:
+        response_json = response.json()
+        try:
+            # Attempt to retrieve the generated content from Gemini (updated key)
+            return response_json['candidates'][0]['content']['parts'][0]['text']
+        except KeyError as e:
+            # If the response format is incorrect or key is missing, return a generic error message
+            return "Sorry, the response format is incorrect."
+    else:
+        # If the API call fails, return a generic error message
+        return "Sorry, there was an error processing your request."
+
+
+
 # Fonction de login
 def login():
     st.title("Heart Attack Prediction & Recommendation App")
@@ -72,10 +106,19 @@ if 'logged_in' in st.session_state and st.session_state.logged_in:
     # Afficher le formulaire de prédiction après la connexion
     st.title("Heart Attack Prediction & Recommendation")
 
+            # Streamlit interface
+    st.title("Chatbot")
+
+    user_input = st.text_input("Question", "")
+
+    if user_input:
+        response = get_gemini_response(user_input)
+        st.write(f"Bot: {response}")
+
     # Formulaire pour entrer les données utilisateur
     st.header("Entrer vos données")
     user_input = {}
-    sex_mapping = {"Femme": 0, "Homme": 1}
+    sex_mapping = {"Woman": 0, "Man": 1}
     user_input['sex'] = sex_mapping[st.selectbox("Sex", options=list(sex_mapping.keys()))]
 
     # Mapping des valeurs pour Chest Pain
@@ -132,7 +175,7 @@ if 'logged_in' in st.session_state and st.session_state.logged_in:
         "Not described" : 3
     }
     user_input['thall'] = thall_mapping[st.selectbox("Thalium Stress Test Result", options=list(thall_mapping.keys()))]
-
+    
     # Créer le formulaire avec les noms complets
     for col in column_names:
         if col == "chol":  # On ajoute l'unité mg/dL pour ce champ
@@ -168,7 +211,6 @@ if 'logged_in' in st.session_state and st.session_state.logged_in:
             [st.session_state.data, pd.DataFrame([user_input])],
             ignore_index=True
         )
-
 
         if prediction == 0:
             st.success("Bonne nouvelle ! Aucune indication de risque de crise cardiaque détectée. 😊")
