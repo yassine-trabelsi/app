@@ -142,6 +142,46 @@ def home_page():
     st.image("CVD_Infographics.png", caption="Stay Heart-Healthy ❤️", use_container_width=False, width=750)
     
 
+def about_us():
+    st.title("Discover Our Team")
+    st.write(
+        """
+        As a team of passionate individuals, we embarked on a journey to create a 
+        user-friendly and efficient application to predict **Heart Disease**.
+        """
+    )
+
+    st.subheader("Team Members:")
+    st.markdown("""
+    - **Trabelsi Yassine**
+    - **Medyouni Saber**  
+    - **Bensalah Yassine**  
+    - **Ouertani Fatma**
+    - **Haouari Khalil**
+    - **Mannai Molka**
+    - **Chniti Yasser**  
+    """)
+
+    st.subheader("Guide:")
+    st.markdown("""
+    - **M.Jihene Hlel**  
+    - Our mentor and guide, whose invaluable support and expertise have been instrumental in shaping this project.  
+    """)
+
+    st.write(
+        """
+        Throughout the development process, we have combined our diverse skills and knowledge 
+        to deliver a robust and accurate heart disease prediction system.  
+        We are committed to promoting health awareness and providing a valuable tool for 
+        individuals to assess their health risks.
+        """
+    )
+
+    st.success(
+        "Thank you for choosing our CardioAlert App. "
+        "We hope it proves to be a valuable resource for you and others."
+    )
+
 
 def chat_page():
     st.title("CardioAlert App 🚨")
@@ -356,7 +396,9 @@ if st.session_state.logged_in:
     if st.sidebar.button("Prediction & Recommandations"):
         st.session_state.page = "Prediction & Recommandations"    
     if st.sidebar.button("Chat Bot"):
-        st.session_state.page = "Chat Bot"    
+        st.session_state.page = "Chat Bot"  
+    if st.sidebar.button("About Us"):
+        st.session_state.page = "About Us"        
 
     if "page" not in st.session_state:
         st.session_state.page = "Home"
@@ -367,5 +409,7 @@ if st.session_state.logged_in:
         prediction_page()
     elif st.session_state.page == "Chat Bot":
         chat_page()
+    elif st.session_state.page == "About Us":
+        about_us()  
 else:
     login()
