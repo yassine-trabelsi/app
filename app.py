@@ -331,9 +331,6 @@ def prediction_page():
         bilan += "\nProfil :\n"
         bilan += f"{cluster_name}\n"
 
-        bilan += "\Recommendations :\n"
-        bilan += f"{recommendation_msg}\n"
-
         # Envoi de l'e-mail après prédiction
         if send_email(
             st.session_state.user_email,
