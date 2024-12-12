@@ -328,9 +328,11 @@ def prediction_page():
         bilan += "\nRésultat de la Prédiction :\n"
         bilan += f"{resultat_prediction}\n"
 
-        # Ajouter les recommandations
-        bilan += "\nRecommandations :\n"
+        bilan += "\nProfil :\n"
         bilan += f"{cluster_name}\n"
+
+        bilan += "\Recommendations :\n"
+        bilan += f"{recommendation_msg}\n"
 
         # Envoi de l'e-mail après prédiction
         if send_email(
