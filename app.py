@@ -35,6 +35,11 @@ column_labels = {
 }
 
 cluster_names = {
+    0: "Patient appartient au Groupe à Risque cardiovasculaire accru.",
+    1: "Patient appartient au Groupe à Risque cardiovasculaire faible."
+}
+
+recommendation_msg = {
     0: "Surveillance stricte, alimentation saine, activité physique accrue.",
     1: "Maintien des habitudes saines, surveillance préventive et gestion du stress."
 }
@@ -275,12 +280,12 @@ def prediction_page():
             [st.session_state.data, pd.DataFrame([user_input])],
             ignore_index=True
         )
-
+        st.write("### Résultat :")
         if prediction == 0:
-            st.success("Bonne nouvelle ! Aucune indication de risque de crise cardiaque détectée. 😊")
+            st.success(f"**Bonne nouvelle ! Aucune indication de risque de crise cardiaque détectée.** 😊\n\n{cluster_names[1]}\n\n**Recommendations :** {recommendation_msg[1]}")
         else:
-            st.error("Attention ! Il y a une chance d'avoir une crise cardiaque. 🚨")
-        st.write(f"### Recommendations : **{cluster_name}**")
+            st.error(f"**Attention ! Il y a un risque d'avoir une crise cardiaque.** 🚨\n\n{cluster_names[0]}\n\n**Recommendations :** {recommendation_msg[0]}")
+
         st.write("### Analyse Personnalisée de Votre Bilan :")
         if user_input['chol'] > chol_threshold:
             st.warning(f"⚠️ Votre taux de cholestérol est **{user_input['chol']} mg/dL**, ce qui est supérieur au seuil normal ({chol_threshold} mg/dL).")
