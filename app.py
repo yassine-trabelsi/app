@@ -57,7 +57,7 @@ def get_gemini_response(user_input):
         "Content-Type": "application/json"
     }
     params = {
-        "key": "AIzaSyBE1AXHM84mbW_jBrA-ArwqZodEDLuAbvU" 
+        "key": "AIzaSyA9VBH61eL57lANcpwAW2VvRzZtNhKo_Uk" 
     }
     data = {
         "contents": [{
